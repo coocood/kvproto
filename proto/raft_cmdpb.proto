@@ -298,6 +298,10 @@ message StatusResponse {
     RegionDetailResponse region_detail = 3;
 }
 
+message CustomRequest {
+    bytes data = 1;
+}
+
 message RaftRequestHeader {
     uint64 region_id = 1;
     metapb.Peer peer = 2;
@@ -333,6 +337,7 @@ message RaftCmdRequest {
     repeated Request requests = 2;
     AdminRequest admin_request = 3;
     StatusRequest status_request = 4;
+    CustomRequest custom_request = 5;
 }
 
 message RaftCmdResponse {
