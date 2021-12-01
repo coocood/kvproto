@@ -5471,6 +5471,7 @@ impl ::protobuf::reflect::ProtobufValue for GetStoreInfoRequest {
 pub struct GetStoreInfoResponse {
     // message fields
     pub store_id: u64,
+    pub api_version: super::kvrpcpb::ApiVersion,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -5501,6 +5502,21 @@ impl GetStoreInfoResponse {
     pub fn set_store_id(&mut self, v: u64) {
         self.store_id = v;
     }
+
+    // .kvrpcpb.APIVersion api_version = 2;
+
+
+    pub fn get_api_version(&self) -> super::kvrpcpb::ApiVersion {
+        self.api_version
+    }
+    pub fn clear_api_version(&mut self) {
+        self.api_version = super::kvrpcpb::ApiVersion::V1;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_api_version(&mut self, v: super::kvrpcpb::ApiVersion) {
+        self.api_version = v;
+    }
 }
 
 impl ::protobuf::Message for GetStoreInfoResponse {
@@ -5519,6 +5535,9 @@ impl ::protobuf::Message for GetStoreInfoResponse {
                     let tmp = is.read_uint64()?;
                     self.store_id = tmp;
                 },
+                2 => {
+                    if wire_type == ::protobuf::wire_format::WireTypeVarint {self.api_version = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -5534,6 +5553,9 @@ impl ::protobuf::Message for GetStoreInfoResponse {
         if self.store_id != 0 {
             my_size += ::protobuf::rt::value_size(1, self.store_id, ::protobuf::wire_format::WireTypeVarint);
         }
+        if self.api_version != super::kvrpcpb::ApiVersion::V1 {
+            my_size += ::protobuf::rt::enum_size(2, self.api_version);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -5542,6 +5564,9 @@ impl ::protobuf::Message for GetStoreInfoResponse {
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
         if self.store_id != 0 {
             os.write_uint64(1, self.store_id)?;
+        }
+        if self.api_version != super::kvrpcpb::ApiVersion::V1 {
+            os.write_enum(2, self.api_version.value())?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -5591,6 +5616,7 @@ impl ::protobuf::Message for GetStoreInfoResponse {
 impl ::protobuf::Clear for GetStoreInfoResponse {
     fn clear(&mut self) {
         self.store_id = 0;
+        self.api_version = super::kvrpcpb::ApiVersion::V1;
         self.unknown_fields.clear();
     }
 }
@@ -5601,6 +5627,7 @@ impl ::protobuf::PbPrint for GetStoreInfoResponse {
         ::protobuf::push_message_start(name, buf);
         let old_len = buf.len();
         ::protobuf::PbPrint::fmt(&self.store_id, "store_id", buf);
+        ::protobuf::PbPrint::fmt(&self.api_version, "api_version", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -5612,6 +5639,7 @@ impl ::std::fmt::Debug for GetStoreInfoResponse {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         let mut s = String::new();
         ::protobuf::PbPrint::fmt(&self.store_id, "store_id", &mut s);
+        ::protobuf::PbPrint::fmt(&self.api_version, "api_version", &mut s);
         write!(f, "{}", s)
     }
 }

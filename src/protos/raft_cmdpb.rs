@@ -5861,6 +5861,7 @@ impl ::protobuf::reflect::ProtobufValue for CompactLogResponse {
 pub struct TransferLeaderRequest {
     // message fields
     pub peer: ::protobuf::SingularPtrField<super::metapb::Peer>,
+    pub peers: ::protobuf::RepeatedField<super::metapb::Peer>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -5909,11 +5910,41 @@ impl TransferLeaderRequest {
     pub fn take_peer(&mut self) -> super::metapb::Peer {
         self.peer.take().unwrap_or_else(|| super::metapb::Peer::new())
     }
+
+    // repeated .metapb.Peer peers = 2;
+
+
+    pub fn get_peers(&self) -> &[super::metapb::Peer] {
+        &self.peers
+    }
+    pub fn clear_peers(&mut self) {
+        self.peers.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_peers(&mut self, v: ::protobuf::RepeatedField<super::metapb::Peer>) {
+        self.peers = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_peers(&mut self) -> &mut ::protobuf::RepeatedField<super::metapb::Peer> {
+        &mut self.peers
+    }
+
+    // Take field
+    pub fn take_peers(&mut self) -> ::protobuf::RepeatedField<super::metapb::Peer> {
+        ::std::mem::replace(&mut self.peers, ::protobuf::RepeatedField::new())
+    }
 }
 
 impl ::protobuf::Message for TransferLeaderRequest {
     fn is_initialized(&self) -> bool {
         for v in &self.peer {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.peers {
             if !v.is_initialized() {
                 return false;
             }
@@ -5927,6 +5958,9 @@ impl ::protobuf::Message for TransferLeaderRequest {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.peer)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.peers)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -5944,6 +5978,10 @@ impl ::protobuf::Message for TransferLeaderRequest {
             let len = v.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         }
+        for value in &self.peers {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -5955,6 +5993,11 @@ impl ::protobuf::Message for TransferLeaderRequest {
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
         }
+        for v in &self.peers {
+            os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -6003,6 +6046,7 @@ impl ::protobuf::Message for TransferLeaderRequest {
 impl ::protobuf::Clear for TransferLeaderRequest {
     fn clear(&mut self) {
         self.peer.clear();
+        self.peers.clear();
         self.unknown_fields.clear();
     }
 }
@@ -6013,6 +6057,7 @@ impl ::protobuf::PbPrint for TransferLeaderRequest {
         ::protobuf::push_message_start(name, buf);
         let old_len = buf.len();
         ::protobuf::PbPrint::fmt(&self.peer, "peer", buf);
+        ::protobuf::PbPrint::fmt(&self.peers, "peers", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -6024,6 +6069,7 @@ impl ::std::fmt::Debug for TransferLeaderRequest {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         let mut s = String::new();
         ::protobuf::PbPrint::fmt(&self.peer, "peer", &mut s);
+        ::protobuf::PbPrint::fmt(&self.peers, "peers", &mut s);
         write!(f, "{}", s)
     }
 }

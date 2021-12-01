@@ -212,6 +212,13 @@ const METHOD_PD_SPLIT_REGIONS: ::grpcio::Method<super::pdpb::SplitRegionsRequest
     resp_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
 };
 
+const METHOD_PD_SPLIT_AND_SCATTER_REGIONS: ::grpcio::Method<super::pdpb::SplitAndScatterRegionsRequest, super::pdpb::SplitAndScatterRegionsResponse> = ::grpcio::Method {
+    ty: ::grpcio::MethodType::Unary,
+    name: "/pdpb.PD/SplitAndScatterRegions",
+    req_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
+    resp_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
+};
+
 const METHOD_PD_GET_DC_LOCATION_INFO: ::grpcio::Method<super::pdpb::GetDcLocationInfoRequest, super::pdpb::GetDcLocationInfoResponse> = ::grpcio::Method {
     ty: ::grpcio::MethodType::Unary,
     name: "/pdpb.PD/GetDCLocationInfo",
@@ -655,6 +662,22 @@ impl PdClient {
         self.split_regions_async_opt(req, ::grpcio::CallOption::default())
     }
 
+    pub fn split_and_scatter_regions_opt(&self, req: &super::pdpb::SplitAndScatterRegionsRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<super::pdpb::SplitAndScatterRegionsResponse> {
+        self.client.unary_call(&METHOD_PD_SPLIT_AND_SCATTER_REGIONS, req, opt)
+    }
+
+    pub fn split_and_scatter_regions(&self, req: &super::pdpb::SplitAndScatterRegionsRequest) -> ::grpcio::Result<super::pdpb::SplitAndScatterRegionsResponse> {
+        self.split_and_scatter_regions_opt(req, ::grpcio::CallOption::default())
+    }
+
+    pub fn split_and_scatter_regions_async_opt(&self, req: &super::pdpb::SplitAndScatterRegionsRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::pdpb::SplitAndScatterRegionsResponse>> {
+        self.client.unary_call_async(&METHOD_PD_SPLIT_AND_SCATTER_REGIONS, req, opt)
+    }
+
+    pub fn split_and_scatter_regions_async(&self, req: &super::pdpb::SplitAndScatterRegionsRequest) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::pdpb::SplitAndScatterRegionsResponse>> {
+        self.split_and_scatter_regions_async_opt(req, ::grpcio::CallOption::default())
+    }
+
     pub fn get_dc_location_info_opt(&self, req: &super::pdpb::GetDcLocationInfoRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<super::pdpb::GetDcLocationInfoResponse> {
         self.client.unary_call(&METHOD_PD_GET_DC_LOCATION_INFO, req, opt)
     }
@@ -758,6 +781,9 @@ pub trait Pd {
         grpcio::unimplemented_call!(ctx, sink)
     }
     fn split_regions(&mut self, ctx: ::grpcio::RpcContext, _req: super::pdpb::SplitRegionsRequest, sink: ::grpcio::UnarySink<super::pdpb::SplitRegionsResponse>) {
+        grpcio::unimplemented_call!(ctx, sink)
+    }
+    fn split_and_scatter_regions(&mut self, ctx: ::grpcio::RpcContext, _req: super::pdpb::SplitAndScatterRegionsRequest, sink: ::grpcio::UnarySink<super::pdpb::SplitAndScatterRegionsResponse>) {
         grpcio::unimplemented_call!(ctx, sink)
     }
     fn get_dc_location_info(&mut self, ctx: ::grpcio::RpcContext, _req: super::pdpb::GetDcLocationInfoRequest, sink: ::grpcio::UnarySink<super::pdpb::GetDcLocationInfoResponse>) {
@@ -878,6 +904,10 @@ pub fn create_pd<S: Pd + Send + Clone + 'static>(s: S) -> ::grpcio::Service {
     let mut instance = s.clone();
     builder = builder.add_unary_handler(&METHOD_PD_SPLIT_REGIONS, move |ctx, req, resp| {
         instance.split_regions(ctx, req, resp)
+    });
+    let mut instance = s.clone();
+    builder = builder.add_unary_handler(&METHOD_PD_SPLIT_AND_SCATTER_REGIONS, move |ctx, req, resp| {
+        instance.split_and_scatter_regions(ctx, req, resp)
     });
     let mut instance = s;
     builder = builder.add_unary_handler(&METHOD_PD_GET_DC_LOCATION_INFO, move |ctx, req, resp| {

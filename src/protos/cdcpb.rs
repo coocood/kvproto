@@ -538,6 +538,193 @@ impl ::protobuf::reflect::ProtobufValue for Compatibility {
 }
 
 #[derive(PartialEq,Clone,Default)]
+pub struct ClusterIdMismatch {
+    // message fields
+    pub current: u64,
+    pub request: u64,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a ClusterIdMismatch {
+    fn default() -> &'a ClusterIdMismatch {
+        <ClusterIdMismatch as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl ClusterIdMismatch {
+    pub fn new() -> ClusterIdMismatch {
+        ::std::default::Default::default()
+    }
+
+    // uint64 current = 1;
+
+
+    pub fn get_current(&self) -> u64 {
+        self.current
+    }
+    pub fn clear_current(&mut self) {
+        self.current = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_current(&mut self, v: u64) {
+        self.current = v;
+    }
+
+    // uint64 request = 2;
+
+
+    pub fn get_request(&self) -> u64 {
+        self.request
+    }
+    pub fn clear_request(&mut self) {
+        self.request = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_request(&mut self, v: u64) {
+        self.request = v;
+    }
+}
+
+impl ::protobuf::Message for ClusterIdMismatch {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.current = tmp;
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.request = tmp;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.current != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.current, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.request != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.request, ::protobuf::wire_format::WireTypeVarint);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if self.current != 0 {
+            os.write_uint64(1, self.current)?;
+        }
+        if self.request != 0 {
+            os.write_uint64(2, self.request)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> ClusterIdMismatch {
+        ClusterIdMismatch::new()
+    }
+
+    fn default_instance() -> &'static ClusterIdMismatch {
+        static mut instance: ::protobuf::lazy::Lazy<ClusterIdMismatch> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ClusterIdMismatch,
+        };
+        unsafe {
+            instance.get(ClusterIdMismatch::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for ClusterIdMismatch {
+    fn clear(&mut self) {
+        self.current = 0;
+        self.request = 0;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::protobuf::PbPrint for ClusterIdMismatch {
+    #[allow(unused_variables)]
+    fn fmt(&self, name: &str, buf: &mut String) {
+        ::protobuf::push_message_start(name, buf);
+        let old_len = buf.len();
+        ::protobuf::PbPrint::fmt(&self.current, "current", buf);
+        ::protobuf::PbPrint::fmt(&self.request, "request", buf);
+        if old_len < buf.len() {
+          buf.push(' ');
+        }
+        buf.push('}');
+    }
+}
+impl ::std::fmt::Debug for ClusterIdMismatch {
+    #[allow(unused_variables)]
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        let mut s = String::new();
+        ::protobuf::PbPrint::fmt(&self.current, "current", &mut s);
+        ::protobuf::PbPrint::fmt(&self.request, "request", &mut s);
+        write!(f, "{}", s)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for ClusterIdMismatch {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
 pub struct Error {
     // message fields
     pub not_leader: ::protobuf::SingularPtrField<super::errorpb::NotLeader>,
@@ -545,6 +732,7 @@ pub struct Error {
     pub epoch_not_match: ::protobuf::SingularPtrField<super::errorpb::EpochNotMatch>,
     pub duplicate_request: ::protobuf::SingularPtrField<DuplicateRequest>,
     pub compatibility: ::protobuf::SingularPtrField<Compatibility>,
+    pub cluster_id_mismatch: ::protobuf::SingularPtrField<ClusterIdMismatch>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -725,6 +913,39 @@ impl Error {
     pub fn take_compatibility(&mut self) -> Compatibility {
         self.compatibility.take().unwrap_or_else(|| Compatibility::new())
     }
+
+    // .cdcpb.ClusterIDMismatch cluster_id_mismatch = 6;
+
+
+    pub fn get_cluster_id_mismatch(&self) -> &ClusterIdMismatch {
+        self.cluster_id_mismatch.as_ref().unwrap_or_else(|| ClusterIdMismatch::default_instance())
+    }
+    pub fn clear_cluster_id_mismatch(&mut self) {
+        self.cluster_id_mismatch.clear();
+    }
+
+    pub fn has_cluster_id_mismatch(&self) -> bool {
+        self.cluster_id_mismatch.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_cluster_id_mismatch(&mut self, v: ClusterIdMismatch) {
+        self.cluster_id_mismatch = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_cluster_id_mismatch(&mut self) -> &mut ClusterIdMismatch {
+        if self.cluster_id_mismatch.is_none() {
+            self.cluster_id_mismatch.set_default();
+        }
+        self.cluster_id_mismatch.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_cluster_id_mismatch(&mut self) -> ClusterIdMismatch {
+        self.cluster_id_mismatch.take().unwrap_or_else(|| ClusterIdMismatch::new())
+    }
 }
 
 impl ::protobuf::Message for Error {
@@ -754,6 +975,11 @@ impl ::protobuf::Message for Error {
                 return false;
             }
         };
+        for v in &self.cluster_id_mismatch {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
         true
     }
 
@@ -775,6 +1001,9 @@ impl ::protobuf::Message for Error {
                 },
                 5 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.compatibility)?;
+                },
+                6 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.cluster_id_mismatch)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -808,6 +1037,10 @@ impl ::protobuf::Message for Error {
             let len = v.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         }
+        if let Some(ref v) = self.cluster_id_mismatch.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -836,6 +1069,11 @@ impl ::protobuf::Message for Error {
         }
         if let Some(ref v) = self.compatibility.as_ref() {
             os.write_tag(5, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        if let Some(ref v) = self.cluster_id_mismatch.as_ref() {
+            os.write_tag(6, ::protobuf::wire_format::WireTypeLengthDelimited)?;
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
         }
@@ -891,6 +1129,7 @@ impl ::protobuf::Clear for Error {
         self.epoch_not_match.clear();
         self.duplicate_request.clear();
         self.compatibility.clear();
+        self.cluster_id_mismatch.clear();
         self.unknown_fields.clear();
     }
 }
@@ -905,6 +1144,7 @@ impl ::protobuf::PbPrint for Error {
         ::protobuf::PbPrint::fmt(&self.epoch_not_match, "epoch_not_match", buf);
         ::protobuf::PbPrint::fmt(&self.duplicate_request, "duplicate_request", buf);
         ::protobuf::PbPrint::fmt(&self.compatibility, "compatibility", buf);
+        ::protobuf::PbPrint::fmt(&self.cluster_id_mismatch, "cluster_id_mismatch", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -920,6 +1160,7 @@ impl ::std::fmt::Debug for Error {
         ::protobuf::PbPrint::fmt(&self.epoch_not_match, "epoch_not_match", &mut s);
         ::protobuf::PbPrint::fmt(&self.duplicate_request, "duplicate_request", &mut s);
         ::protobuf::PbPrint::fmt(&self.compatibility, "compatibility", &mut s);
+        ::protobuf::PbPrint::fmt(&self.cluster_id_mismatch, "cluster_id_mismatch", &mut s);
         write!(f, "{}", s)
     }
 }

@@ -506,6 +506,8 @@ pub struct SstMeta {
     pub end_key_exclusive: bool,
     pub total_kvs: u64,
     pub total_bytes: u64,
+    pub api_version: super::kvrpcpb::ApiVersion,
+    pub cipher_iv: ::std::vec::Vec<u8>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -729,6 +731,47 @@ impl SstMeta {
     pub fn set_total_bytes(&mut self, v: u64) {
         self.total_bytes = v;
     }
+
+    // .kvrpcpb.APIVersion api_version = 11;
+
+
+    pub fn get_api_version(&self) -> super::kvrpcpb::ApiVersion {
+        self.api_version
+    }
+    pub fn clear_api_version(&mut self) {
+        self.api_version = super::kvrpcpb::ApiVersion::V1;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_api_version(&mut self, v: super::kvrpcpb::ApiVersion) {
+        self.api_version = v;
+    }
+
+    // bytes cipher_iv = 12;
+
+
+    pub fn get_cipher_iv(&self) -> &[u8] {
+        &self.cipher_iv
+    }
+    pub fn clear_cipher_iv(&mut self) {
+        self.cipher_iv.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_cipher_iv(&mut self, v: ::std::vec::Vec<u8>) {
+        self.cipher_iv = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_cipher_iv(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.cipher_iv
+    }
+
+    // Take field
+    pub fn take_cipher_iv(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.cipher_iv, ::std::vec::Vec::new())
+    }
 }
 
 impl ::protobuf::Message for SstMeta {
@@ -804,6 +847,12 @@ impl ::protobuf::Message for SstMeta {
                     let tmp = is.read_uint64()?;
                     self.total_bytes = tmp;
                 },
+                11 => {
+                    if wire_type == ::protobuf::wire_format::WireTypeVarint {self.api_version = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
+                },
+                12 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.cipher_iv)?;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -848,6 +897,12 @@ impl ::protobuf::Message for SstMeta {
         if self.total_bytes != 0 {
             my_size += ::protobuf::rt::value_size(10, self.total_bytes, ::protobuf::wire_format::WireTypeVarint);
         }
+        if self.api_version != super::kvrpcpb::ApiVersion::V1 {
+            my_size += ::protobuf::rt::enum_size(11, self.api_version);
+        }
+        if !self.cipher_iv.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(12, &self.cipher_iv);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -887,6 +942,12 @@ impl ::protobuf::Message for SstMeta {
         }
         if self.total_bytes != 0 {
             os.write_uint64(10, self.total_bytes)?;
+        }
+        if self.api_version != super::kvrpcpb::ApiVersion::V1 {
+            os.write_enum(11, self.api_version.value())?;
+        }
+        if !self.cipher_iv.is_empty() {
+            os.write_bytes(12, &self.cipher_iv)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -945,6 +1006,8 @@ impl ::protobuf::Clear for SstMeta {
         self.end_key_exclusive = false;
         self.total_kvs = 0;
         self.total_bytes = 0;
+        self.api_version = super::kvrpcpb::ApiVersion::V1;
+        self.cipher_iv.clear();
         self.unknown_fields.clear();
     }
 }
@@ -964,6 +1027,8 @@ impl ::protobuf::PbPrint for SstMeta {
         ::protobuf::PbPrint::fmt(&self.end_key_exclusive, "end_key_exclusive", buf);
         ::protobuf::PbPrint::fmt(&self.total_kvs, "total_kvs", buf);
         ::protobuf::PbPrint::fmt(&self.total_bytes, "total_bytes", buf);
+        ::protobuf::PbPrint::fmt(&self.api_version, "api_version", buf);
+        ::protobuf::PbPrint::fmt(&self.cipher_iv, "cipher_iv", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -984,6 +1049,8 @@ impl ::std::fmt::Debug for SstMeta {
         ::protobuf::PbPrint::fmt(&self.end_key_exclusive, "end_key_exclusive", &mut s);
         ::protobuf::PbPrint::fmt(&self.total_kvs, "total_kvs", &mut s);
         ::protobuf::PbPrint::fmt(&self.total_bytes, "total_bytes", &mut s);
+        ::protobuf::PbPrint::fmt(&self.api_version, "api_version", &mut s);
+        ::protobuf::PbPrint::fmt(&self.cipher_iv, "cipher_iv", &mut s);
         write!(f, "{}", s)
     }
 }
@@ -2586,6 +2653,7 @@ pub struct DownloadRequest {
     pub rewrite_rule: ::protobuf::SingularPtrField<RewriteRule>,
     pub storage_backend: ::protobuf::SingularPtrField<super::brpb::StorageBackend>,
     pub is_raw_kv: bool,
+    pub cipher_info: ::protobuf::SingularPtrField<super::brpb::CipherInfo>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -2741,6 +2809,39 @@ impl DownloadRequest {
     pub fn set_is_raw_kv(&mut self, v: bool) {
         self.is_raw_kv = v;
     }
+
+    // .backup.CipherInfo cipher_info = 16;
+
+
+    pub fn get_cipher_info(&self) -> &super::brpb::CipherInfo {
+        self.cipher_info.as_ref().unwrap_or_else(|| super::brpb::CipherInfo::default_instance())
+    }
+    pub fn clear_cipher_info(&mut self) {
+        self.cipher_info.clear();
+    }
+
+    pub fn has_cipher_info(&self) -> bool {
+        self.cipher_info.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_cipher_info(&mut self, v: super::brpb::CipherInfo) {
+        self.cipher_info = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_cipher_info(&mut self) -> &mut super::brpb::CipherInfo {
+        if self.cipher_info.is_none() {
+            self.cipher_info.set_default();
+        }
+        self.cipher_info.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_cipher_info(&mut self) -> super::brpb::CipherInfo {
+        self.cipher_info.take().unwrap_or_else(|| super::brpb::CipherInfo::new())
+    }
 }
 
 impl ::protobuf::Message for DownloadRequest {
@@ -2756,6 +2857,11 @@ impl ::protobuf::Message for DownloadRequest {
             }
         };
         for v in &self.storage_backend {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.cipher_info {
             if !v.is_initialized() {
                 return false;
             }
@@ -2785,6 +2891,9 @@ impl ::protobuf::Message for DownloadRequest {
                     }
                     let tmp = is.read_bool()?;
                     self.is_raw_kv = tmp;
+                },
+                16 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.cipher_info)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -2816,6 +2925,10 @@ impl ::protobuf::Message for DownloadRequest {
         if self.is_raw_kv != false {
             my_size += 2;
         }
+        if let Some(ref v) = self.cipher_info.as_ref() {
+            let len = v.compute_size();
+            my_size += 2 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -2842,6 +2955,11 @@ impl ::protobuf::Message for DownloadRequest {
         }
         if self.is_raw_kv != false {
             os.write_bool(15, self.is_raw_kv)?;
+        }
+        if let Some(ref v) = self.cipher_info.as_ref() {
+            os.write_tag(16, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -2895,6 +3013,7 @@ impl ::protobuf::Clear for DownloadRequest {
         self.rewrite_rule.clear();
         self.storage_backend.clear();
         self.is_raw_kv = false;
+        self.cipher_info.clear();
         self.unknown_fields.clear();
     }
 }
@@ -2909,6 +3028,7 @@ impl ::protobuf::PbPrint for DownloadRequest {
         ::protobuf::PbPrint::fmt(&self.rewrite_rule, "rewrite_rule", buf);
         ::protobuf::PbPrint::fmt(&self.storage_backend, "storage_backend", buf);
         ::protobuf::PbPrint::fmt(&self.is_raw_kv, "is_raw_kv", buf);
+        ::protobuf::PbPrint::fmt(&self.cipher_info, "cipher_info", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -2924,6 +3044,7 @@ impl ::std::fmt::Debug for DownloadRequest {
         ::protobuf::PbPrint::fmt(&self.rewrite_rule, "rewrite_rule", &mut s);
         ::protobuf::PbPrint::fmt(&self.storage_backend, "storage_backend", &mut s);
         ::protobuf::PbPrint::fmt(&self.is_raw_kv, "is_raw_kv", &mut s);
+        ::protobuf::PbPrint::fmt(&self.cipher_info, "cipher_info", &mut s);
         write!(f, "{}", s)
     }
 }

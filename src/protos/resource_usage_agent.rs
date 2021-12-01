@@ -265,6 +265,320 @@ impl ::protobuf::reflect::ProtobufValue for CpuTimeRecord {
 }
 
 #[derive(PartialEq,Clone,Default)]
+pub struct ResourceUsageRecord {
+    // message fields
+    pub resource_group_tag: ::std::vec::Vec<u8>,
+    pub record_list_timestamp_sec: ::std::vec::Vec<u64>,
+    pub record_list_cpu_time_ms: ::std::vec::Vec<u32>,
+    pub record_list_read_keys: ::std::vec::Vec<u32>,
+    pub record_list_write_keys: ::std::vec::Vec<u32>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a ResourceUsageRecord {
+    fn default() -> &'a ResourceUsageRecord {
+        <ResourceUsageRecord as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl ResourceUsageRecord {
+    pub fn new() -> ResourceUsageRecord {
+        ::std::default::Default::default()
+    }
+
+    // bytes resource_group_tag = 1;
+
+
+    pub fn get_resource_group_tag(&self) -> &[u8] {
+        &self.resource_group_tag
+    }
+    pub fn clear_resource_group_tag(&mut self) {
+        self.resource_group_tag.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_resource_group_tag(&mut self, v: ::std::vec::Vec<u8>) {
+        self.resource_group_tag = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_resource_group_tag(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.resource_group_tag
+    }
+
+    // Take field
+    pub fn take_resource_group_tag(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.resource_group_tag, ::std::vec::Vec::new())
+    }
+
+    // repeated uint64 record_list_timestamp_sec = 2;
+
+
+    pub fn get_record_list_timestamp_sec(&self) -> &[u64] {
+        &self.record_list_timestamp_sec
+    }
+    pub fn clear_record_list_timestamp_sec(&mut self) {
+        self.record_list_timestamp_sec.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_record_list_timestamp_sec(&mut self, v: ::std::vec::Vec<u64>) {
+        self.record_list_timestamp_sec = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_record_list_timestamp_sec(&mut self) -> &mut ::std::vec::Vec<u64> {
+        &mut self.record_list_timestamp_sec
+    }
+
+    // Take field
+    pub fn take_record_list_timestamp_sec(&mut self) -> ::std::vec::Vec<u64> {
+        ::std::mem::replace(&mut self.record_list_timestamp_sec, ::std::vec::Vec::new())
+    }
+
+    // repeated uint32 record_list_cpu_time_ms = 3;
+
+
+    pub fn get_record_list_cpu_time_ms(&self) -> &[u32] {
+        &self.record_list_cpu_time_ms
+    }
+    pub fn clear_record_list_cpu_time_ms(&mut self) {
+        self.record_list_cpu_time_ms.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_record_list_cpu_time_ms(&mut self, v: ::std::vec::Vec<u32>) {
+        self.record_list_cpu_time_ms = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_record_list_cpu_time_ms(&mut self) -> &mut ::std::vec::Vec<u32> {
+        &mut self.record_list_cpu_time_ms
+    }
+
+    // Take field
+    pub fn take_record_list_cpu_time_ms(&mut self) -> ::std::vec::Vec<u32> {
+        ::std::mem::replace(&mut self.record_list_cpu_time_ms, ::std::vec::Vec::new())
+    }
+
+    // repeated uint32 record_list_read_keys = 4;
+
+
+    pub fn get_record_list_read_keys(&self) -> &[u32] {
+        &self.record_list_read_keys
+    }
+    pub fn clear_record_list_read_keys(&mut self) {
+        self.record_list_read_keys.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_record_list_read_keys(&mut self, v: ::std::vec::Vec<u32>) {
+        self.record_list_read_keys = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_record_list_read_keys(&mut self) -> &mut ::std::vec::Vec<u32> {
+        &mut self.record_list_read_keys
+    }
+
+    // Take field
+    pub fn take_record_list_read_keys(&mut self) -> ::std::vec::Vec<u32> {
+        ::std::mem::replace(&mut self.record_list_read_keys, ::std::vec::Vec::new())
+    }
+
+    // repeated uint32 record_list_write_keys = 5;
+
+
+    pub fn get_record_list_write_keys(&self) -> &[u32] {
+        &self.record_list_write_keys
+    }
+    pub fn clear_record_list_write_keys(&mut self) {
+        self.record_list_write_keys.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_record_list_write_keys(&mut self, v: ::std::vec::Vec<u32>) {
+        self.record_list_write_keys = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_record_list_write_keys(&mut self) -> &mut ::std::vec::Vec<u32> {
+        &mut self.record_list_write_keys
+    }
+
+    // Take field
+    pub fn take_record_list_write_keys(&mut self) -> ::std::vec::Vec<u32> {
+        ::std::mem::replace(&mut self.record_list_write_keys, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for ResourceUsageRecord {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.resource_group_tag)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_repeated_uint64_into(wire_type, is, &mut self.record_list_timestamp_sec)?;
+                },
+                3 => {
+                    ::protobuf::rt::read_repeated_uint32_into(wire_type, is, &mut self.record_list_cpu_time_ms)?;
+                },
+                4 => {
+                    ::protobuf::rt::read_repeated_uint32_into(wire_type, is, &mut self.record_list_read_keys)?;
+                },
+                5 => {
+                    ::protobuf::rt::read_repeated_uint32_into(wire_type, is, &mut self.record_list_write_keys)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.resource_group_tag.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.resource_group_tag);
+        }
+        for value in &self.record_list_timestamp_sec {
+            my_size += ::protobuf::rt::value_size(2, *value, ::protobuf::wire_format::WireTypeVarint);
+        };
+        for value in &self.record_list_cpu_time_ms {
+            my_size += ::protobuf::rt::value_size(3, *value, ::protobuf::wire_format::WireTypeVarint);
+        };
+        for value in &self.record_list_read_keys {
+            my_size += ::protobuf::rt::value_size(4, *value, ::protobuf::wire_format::WireTypeVarint);
+        };
+        for value in &self.record_list_write_keys {
+            my_size += ::protobuf::rt::value_size(5, *value, ::protobuf::wire_format::WireTypeVarint);
+        };
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if !self.resource_group_tag.is_empty() {
+            os.write_bytes(1, &self.resource_group_tag)?;
+        }
+        for v in &self.record_list_timestamp_sec {
+            os.write_uint64(2, *v)?;
+        };
+        for v in &self.record_list_cpu_time_ms {
+            os.write_uint32(3, *v)?;
+        };
+        for v in &self.record_list_read_keys {
+            os.write_uint32(4, *v)?;
+        };
+        for v in &self.record_list_write_keys {
+            os.write_uint32(5, *v)?;
+        };
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> ResourceUsageRecord {
+        ResourceUsageRecord::new()
+    }
+
+    fn default_instance() -> &'static ResourceUsageRecord {
+        static mut instance: ::protobuf::lazy::Lazy<ResourceUsageRecord> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ResourceUsageRecord,
+        };
+        unsafe {
+            instance.get(ResourceUsageRecord::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for ResourceUsageRecord {
+    fn clear(&mut self) {
+        self.resource_group_tag.clear();
+        self.record_list_timestamp_sec.clear();
+        self.record_list_cpu_time_ms.clear();
+        self.record_list_read_keys.clear();
+        self.record_list_write_keys.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::protobuf::PbPrint for ResourceUsageRecord {
+    #[allow(unused_variables)]
+    fn fmt(&self, name: &str, buf: &mut String) {
+        ::protobuf::push_message_start(name, buf);
+        let old_len = buf.len();
+        ::protobuf::PbPrint::fmt(&self.resource_group_tag, "resource_group_tag", buf);
+        ::protobuf::PbPrint::fmt(&self.record_list_timestamp_sec, "record_list_timestamp_sec", buf);
+        ::protobuf::PbPrint::fmt(&self.record_list_cpu_time_ms, "record_list_cpu_time_ms", buf);
+        ::protobuf::PbPrint::fmt(&self.record_list_read_keys, "record_list_read_keys", buf);
+        ::protobuf::PbPrint::fmt(&self.record_list_write_keys, "record_list_write_keys", buf);
+        if old_len < buf.len() {
+          buf.push(' ');
+        }
+        buf.push('}');
+    }
+}
+impl ::std::fmt::Debug for ResourceUsageRecord {
+    #[allow(unused_variables)]
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        let mut s = String::new();
+        ::protobuf::PbPrint::fmt(&self.resource_group_tag, "resource_group_tag", &mut s);
+        ::protobuf::PbPrint::fmt(&self.record_list_timestamp_sec, "record_list_timestamp_sec", &mut s);
+        ::protobuf::PbPrint::fmt(&self.record_list_cpu_time_ms, "record_list_cpu_time_ms", &mut s);
+        ::protobuf::PbPrint::fmt(&self.record_list_read_keys, "record_list_read_keys", &mut s);
+        ::protobuf::PbPrint::fmt(&self.record_list_write_keys, "record_list_write_keys", &mut s);
+        write!(f, "{}", s)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for ResourceUsageRecord {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
 pub struct EmptyResponse {
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
@@ -374,6 +688,121 @@ impl ::std::fmt::Debug for EmptyResponse {
 }
 
 impl ::protobuf::reflect::ProtobufValue for EmptyResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct ResourceMeteringRequest {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a ResourceMeteringRequest {
+    fn default() -> &'a ResourceMeteringRequest {
+        <ResourceMeteringRequest as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl ResourceMeteringRequest {
+    pub fn new() -> ResourceMeteringRequest {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for ResourceMeteringRequest {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> ResourceMeteringRequest {
+        ResourceMeteringRequest::new()
+    }
+
+    fn default_instance() -> &'static ResourceMeteringRequest {
+        static mut instance: ::protobuf::lazy::Lazy<ResourceMeteringRequest> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ResourceMeteringRequest,
+        };
+        unsafe {
+            instance.get(ResourceMeteringRequest::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for ResourceMeteringRequest {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::protobuf::PbPrint for ResourceMeteringRequest {
+    #[allow(unused_variables)]
+    fn fmt(&self, name: &str, buf: &mut String) {
+    }
+}
+impl ::std::fmt::Debug for ResourceMeteringRequest {
+    #[allow(unused_variables)]
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        Ok(())
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for ResourceMeteringRequest {
     fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
         ::protobuf::reflect::ProtobufValueRef::Message(self)
     }

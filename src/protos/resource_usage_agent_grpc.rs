@@ -23,6 +23,13 @@ const METHOD_RESOURCE_USAGE_AGENT_REPORT_CPU_TIME: ::grpcio::Method<super::resou
     resp_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
 };
 
+const METHOD_RESOURCE_USAGE_AGENT_REPORT: ::grpcio::Method<super::resource_usage_agent::ResourceUsageRecord, super::resource_usage_agent::EmptyResponse> = ::grpcio::Method {
+    ty: ::grpcio::MethodType::ClientStreaming,
+    name: "/resource_usage_agent.ResourceUsageAgent/Report",
+    req_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
+    resp_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
+};
+
 #[derive(Clone)]
 pub struct ResourceUsageAgentClient {
     client: ::grpcio::Client,
@@ -42,6 +49,14 @@ impl ResourceUsageAgentClient {
     pub fn report_cpu_time(&self) -> ::grpcio::Result<(::grpcio::ClientCStreamSender<super::resource_usage_agent::CpuTimeRecord>, ::grpcio::ClientCStreamReceiver<super::resource_usage_agent::EmptyResponse>)> {
         self.report_cpu_time_opt(::grpcio::CallOption::default())
     }
+
+    pub fn report_opt(&self, opt: ::grpcio::CallOption) -> ::grpcio::Result<(::grpcio::ClientCStreamSender<super::resource_usage_agent::ResourceUsageRecord>, ::grpcio::ClientCStreamReceiver<super::resource_usage_agent::EmptyResponse>)> {
+        self.client.client_streaming(&METHOD_RESOURCE_USAGE_AGENT_REPORT, opt)
+    }
+
+    pub fn report(&self) -> ::grpcio::Result<(::grpcio::ClientCStreamSender<super::resource_usage_agent::ResourceUsageRecord>, ::grpcio::ClientCStreamReceiver<super::resource_usage_agent::EmptyResponse>)> {
+        self.report_opt(::grpcio::CallOption::default())
+    }
     pub fn spawn<F>(&self, f: F) where F: ::futures::Future<Output = ()> + Send + 'static {
         self.client.spawn(f)
     }
@@ -51,13 +66,66 @@ pub trait ResourceUsageAgent {
     fn report_cpu_time(&mut self, ctx: ::grpcio::RpcContext, _stream: ::grpcio::RequestStream<super::resource_usage_agent::CpuTimeRecord>, sink: ::grpcio::ClientStreamingSink<super::resource_usage_agent::EmptyResponse>) {
         grpcio::unimplemented_call!(ctx, sink)
     }
+    fn report(&mut self, ctx: ::grpcio::RpcContext, _stream: ::grpcio::RequestStream<super::resource_usage_agent::ResourceUsageRecord>, sink: ::grpcio::ClientStreamingSink<super::resource_usage_agent::EmptyResponse>) {
+        grpcio::unimplemented_call!(ctx, sink)
+    }
 }
 
 pub fn create_resource_usage_agent<S: ResourceUsageAgent + Send + Clone + 'static>(s: S) -> ::grpcio::Service {
     let mut builder = ::grpcio::ServiceBuilder::new();
-    let mut instance = s;
+    let mut instance = s.clone();
     builder = builder.add_client_streaming_handler(&METHOD_RESOURCE_USAGE_AGENT_REPORT_CPU_TIME, move |ctx, req, resp| {
         instance.report_cpu_time(ctx, req, resp)
+    });
+    let mut instance = s;
+    builder = builder.add_client_streaming_handler(&METHOD_RESOURCE_USAGE_AGENT_REPORT, move |ctx, req, resp| {
+        instance.report(ctx, req, resp)
+    });
+    builder.build()
+}
+
+const METHOD_RESOURCE_METERING_PUB_SUB_SUBSCRIBE: ::grpcio::Method<super::resource_usage_agent::ResourceMeteringRequest, super::resource_usage_agent::ResourceUsageRecord> = ::grpcio::Method {
+    ty: ::grpcio::MethodType::ServerStreaming,
+    name: "/resource_usage_agent.ResourceMeteringPubSub/Subscribe",
+    req_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
+    resp_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
+};
+
+#[derive(Clone)]
+pub struct ResourceMeteringPubSubClient {
+    client: ::grpcio::Client,
+}
+
+impl ResourceMeteringPubSubClient {
+    pub fn new(channel: ::grpcio::Channel) -> Self {
+        ResourceMeteringPubSubClient {
+            client: ::grpcio::Client::new(channel),
+        }
+    }
+
+    pub fn subscribe_opt(&self, req: &super::resource_usage_agent::ResourceMeteringRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientSStreamReceiver<super::resource_usage_agent::ResourceUsageRecord>> {
+        self.client.server_streaming(&METHOD_RESOURCE_METERING_PUB_SUB_SUBSCRIBE, req, opt)
+    }
+
+    pub fn subscribe(&self, req: &super::resource_usage_agent::ResourceMeteringRequest) -> ::grpcio::Result<::grpcio::ClientSStreamReceiver<super::resource_usage_agent::ResourceUsageRecord>> {
+        self.subscribe_opt(req, ::grpcio::CallOption::default())
+    }
+    pub fn spawn<F>(&self, f: F) where F: ::futures::Future<Output = ()> + Send + 'static {
+        self.client.spawn(f)
+    }
+}
+
+pub trait ResourceMeteringPubSub {
+    fn subscribe(&mut self, ctx: ::grpcio::RpcContext, _req: super::resource_usage_agent::ResourceMeteringRequest, sink: ::grpcio::ServerStreamingSink<super::resource_usage_agent::ResourceUsageRecord>) {
+        grpcio::unimplemented_call!(ctx, sink)
+    }
+}
+
+pub fn create_resource_metering_pub_sub<S: ResourceMeteringPubSub + Send + Clone + 'static>(s: S) -> ::grpcio::Service {
+    let mut builder = ::grpcio::ServiceBuilder::new();
+    let mut instance = s;
+    builder = builder.add_server_streaming_handler(&METHOD_RESOURCE_METERING_PUB_SUB_SUBSCRIBE, move |ctx, req, resp| {
+        instance.subscribe(ctx, req, resp)
     });
     builder.build()
 }

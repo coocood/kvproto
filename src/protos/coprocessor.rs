@@ -239,6 +239,7 @@ pub struct Request {
     pub cache_if_match_version: u64,
     pub schema_ver: i64,
     pub is_trace_enabled: bool,
+    pub paging_size: u64,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -428,6 +429,21 @@ impl Request {
     pub fn set_is_trace_enabled(&mut self, v: bool) {
         self.is_trace_enabled = v;
     }
+
+    // uint64 paging_size = 10;
+
+
+    pub fn get_paging_size(&self) -> u64 {
+        self.paging_size
+    }
+    pub fn clear_paging_size(&mut self) {
+        self.paging_size = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_paging_size(&mut self, v: u64) {
+        self.paging_size = v;
+    }
 }
 
 impl ::protobuf::Message for Request {
@@ -500,6 +516,13 @@ impl ::protobuf::Message for Request {
                     let tmp = is.read_bool()?;
                     self.is_trace_enabled = tmp;
                 },
+                10 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.paging_size = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -541,6 +564,9 @@ impl ::protobuf::Message for Request {
         if self.is_trace_enabled != false {
             my_size += 2;
         }
+        if self.paging_size != 0 {
+            my_size += ::protobuf::rt::value_size(10, self.paging_size, ::protobuf::wire_format::WireTypeVarint);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -577,6 +603,9 @@ impl ::protobuf::Message for Request {
         }
         if self.is_trace_enabled != false {
             os.write_bool(9, self.is_trace_enabled)?;
+        }
+        if self.paging_size != 0 {
+            os.write_uint64(10, self.paging_size)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -634,6 +663,7 @@ impl ::protobuf::Clear for Request {
         self.cache_if_match_version = 0;
         self.schema_ver = 0;
         self.is_trace_enabled = false;
+        self.paging_size = 0;
         self.unknown_fields.clear();
     }
 }
@@ -652,6 +682,7 @@ impl ::protobuf::PbPrint for Request {
         ::protobuf::PbPrint::fmt(&self.cache_if_match_version, "cache_if_match_version", buf);
         ::protobuf::PbPrint::fmt(&self.schema_ver, "schema_ver", buf);
         ::protobuf::PbPrint::fmt(&self.is_trace_enabled, "is_trace_enabled", buf);
+        ::protobuf::PbPrint::fmt(&self.paging_size, "paging_size", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -671,6 +702,7 @@ impl ::std::fmt::Debug for Request {
         ::protobuf::PbPrint::fmt(&self.cache_if_match_version, "cache_if_match_version", &mut s);
         ::protobuf::PbPrint::fmt(&self.schema_ver, "schema_ver", &mut s);
         ::protobuf::PbPrint::fmt(&self.is_trace_enabled, "is_trace_enabled", &mut s);
+        ::protobuf::PbPrint::fmt(&self.paging_size, "paging_size", &mut s);
         write!(f, "{}", s)
     }
 }

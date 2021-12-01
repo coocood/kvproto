@@ -19319,6 +19319,8 @@ pub struct Context {
     pub resource_group_tag: ::std::vec::Vec<u8>,
     pub disk_full_opt: DiskFullOpt,
     pub is_retry_request: bool,
+    pub api_version: ApiVersion,
+    pub committed_locks: ::std::vec::Vec<u64>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -19676,6 +19678,46 @@ impl Context {
     pub fn set_is_retry_request(&mut self, v: bool) {
         self.is_retry_request = v;
     }
+
+    // .kvrpcpb.APIVersion api_version = 21;
+
+
+    pub fn get_api_version(&self) -> ApiVersion {
+        self.api_version
+    }
+    pub fn clear_api_version(&mut self) {
+        self.api_version = ApiVersion::V1;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_api_version(&mut self, v: ApiVersion) {
+        self.api_version = v;
+    }
+
+    // repeated uint64 committed_locks = 22;
+
+
+    pub fn get_committed_locks(&self) -> &[u64] {
+        &self.committed_locks
+    }
+    pub fn clear_committed_locks(&mut self) {
+        self.committed_locks.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_committed_locks(&mut self, v: ::std::vec::Vec<u64>) {
+        self.committed_locks = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_committed_locks(&mut self) -> &mut ::std::vec::Vec<u64> {
+        &mut self.committed_locks
+    }
+
+    // Take field
+    pub fn take_committed_locks(&mut self) -> ::std::vec::Vec<u64> {
+        ::std::mem::replace(&mut self.committed_locks, ::std::vec::Vec::new())
+    }
 }
 
 impl ::protobuf::Message for Context {
@@ -19802,6 +19844,12 @@ impl ::protobuf::Message for Context {
                     let tmp = is.read_bool()?;
                     self.is_retry_request = tmp;
                 },
+                21 => {
+                    if wire_type == ::protobuf::wire_format::WireTypeVarint {self.api_version = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
+                },
+                22 => {
+                    ::protobuf::rt::read_repeated_uint64_into(wire_type, is, &mut self.committed_locks)?;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -19873,6 +19921,12 @@ impl ::protobuf::Message for Context {
         if self.is_retry_request != false {
             my_size += 3;
         }
+        if self.api_version != ApiVersion::V1 {
+            my_size += ::protobuf::rt::enum_size(21, self.api_version);
+        }
+        for value in &self.committed_locks {
+            my_size += ::protobuf::rt::value_size(22, *value, ::protobuf::wire_format::WireTypeVarint);
+        };
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -19940,6 +19994,12 @@ impl ::protobuf::Message for Context {
         if self.is_retry_request != false {
             os.write_bool(20, self.is_retry_request)?;
         }
+        if self.api_version != ApiVersion::V1 {
+            os.write_enum(21, self.api_version.value())?;
+        }
+        for v in &self.committed_locks {
+            os.write_uint64(22, *v)?;
+        };
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -20006,6 +20066,8 @@ impl ::protobuf::Clear for Context {
         self.resource_group_tag.clear();
         self.disk_full_opt = DiskFullOpt::NotAllowedOnFull;
         self.is_retry_request = false;
+        self.api_version = ApiVersion::V1;
+        self.committed_locks.clear();
         self.unknown_fields.clear();
     }
 }
@@ -20034,6 +20096,8 @@ impl ::protobuf::PbPrint for Context {
         ::protobuf::PbPrint::fmt(&self.resource_group_tag, "resource_group_tag", buf);
         ::protobuf::PbPrint::fmt(&self.disk_full_opt, "disk_full_opt", buf);
         ::protobuf::PbPrint::fmt(&self.is_retry_request, "is_retry_request", buf);
+        ::protobuf::PbPrint::fmt(&self.api_version, "api_version", buf);
+        ::protobuf::PbPrint::fmt(&self.committed_locks, "committed_locks", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -20063,6 +20127,8 @@ impl ::std::fmt::Debug for Context {
         ::protobuf::PbPrint::fmt(&self.resource_group_tag, "resource_group_tag", &mut s);
         ::protobuf::PbPrint::fmt(&self.disk_full_opt, "disk_full_opt", &mut s);
         ::protobuf::PbPrint::fmt(&self.is_retry_request, "is_retry_request", &mut s);
+        ::protobuf::PbPrint::fmt(&self.api_version, "api_version", &mut s);
+        ::protobuf::PbPrint::fmt(&self.committed_locks, "committed_locks", &mut s);
         write!(f, "{}", s)
     }
 }
@@ -20544,6 +20610,7 @@ pub struct KeyError {
     pub commit_ts_expired: ::protobuf::SingularPtrField<CommitTsExpired>,
     pub txn_not_found: ::protobuf::SingularPtrField<TxnNotFound>,
     pub commit_ts_too_large: ::protobuf::SingularPtrField<CommitTsTooLarge>,
+    pub assertion_failed: ::protobuf::SingularPtrField<AssertionFailed>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -20842,6 +20909,39 @@ impl KeyError {
     pub fn take_commit_ts_too_large(&mut self) -> CommitTsTooLarge {
         self.commit_ts_too_large.take().unwrap_or_else(|| CommitTsTooLarge::new())
     }
+
+    // .kvrpcpb.AssertionFailed assertion_failed = 10;
+
+
+    pub fn get_assertion_failed(&self) -> &AssertionFailed {
+        self.assertion_failed.as_ref().unwrap_or_else(|| AssertionFailed::default_instance())
+    }
+    pub fn clear_assertion_failed(&mut self) {
+        self.assertion_failed.clear();
+    }
+
+    pub fn has_assertion_failed(&self) -> bool {
+        self.assertion_failed.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_assertion_failed(&mut self, v: AssertionFailed) {
+        self.assertion_failed = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_assertion_failed(&mut self) -> &mut AssertionFailed {
+        if self.assertion_failed.is_none() {
+            self.assertion_failed.set_default();
+        }
+        self.assertion_failed.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_assertion_failed(&mut self) -> AssertionFailed {
+        self.assertion_failed.take().unwrap_or_else(|| AssertionFailed::new())
+    }
 }
 
 impl ::protobuf::Message for KeyError {
@@ -20881,6 +20981,11 @@ impl ::protobuf::Message for KeyError {
                 return false;
             }
         };
+        for v in &self.assertion_failed {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
         true
     }
 
@@ -20914,6 +21019,9 @@ impl ::protobuf::Message for KeyError {
                 },
                 9 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.commit_ts_too_large)?;
+                },
+                10 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.assertion_failed)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -20961,6 +21069,10 @@ impl ::protobuf::Message for KeyError {
             let len = v.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         }
+        if let Some(ref v) = self.assertion_failed.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -21005,6 +21117,11 @@ impl ::protobuf::Message for KeyError {
         }
         if let Some(ref v) = self.commit_ts_too_large.as_ref() {
             os.write_tag(9, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        if let Some(ref v) = self.assertion_failed.as_ref() {
+            os.write_tag(10, ::protobuf::wire_format::WireTypeLengthDelimited)?;
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
         }
@@ -21064,6 +21181,7 @@ impl ::protobuf::Clear for KeyError {
         self.commit_ts_expired.clear();
         self.txn_not_found.clear();
         self.commit_ts_too_large.clear();
+        self.assertion_failed.clear();
         self.unknown_fields.clear();
     }
 }
@@ -21082,6 +21200,7 @@ impl ::protobuf::PbPrint for KeyError {
         ::protobuf::PbPrint::fmt(&self.commit_ts_expired, "commit_ts_expired", buf);
         ::protobuf::PbPrint::fmt(&self.txn_not_found, "txn_not_found", buf);
         ::protobuf::PbPrint::fmt(&self.commit_ts_too_large, "commit_ts_too_large", buf);
+        ::protobuf::PbPrint::fmt(&self.assertion_failed, "assertion_failed", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -21101,6 +21220,7 @@ impl ::std::fmt::Debug for KeyError {
         ::protobuf::PbPrint::fmt(&self.commit_ts_expired, "commit_ts_expired", &mut s);
         ::protobuf::PbPrint::fmt(&self.txn_not_found, "txn_not_found", &mut s);
         ::protobuf::PbPrint::fmt(&self.commit_ts_too_large, "commit_ts_too_large", &mut s);
+        ::protobuf::PbPrint::fmt(&self.assertion_failed, "assertion_failed", &mut s);
         write!(f, "{}", s)
     }
 }
@@ -22444,6 +22564,292 @@ impl ::std::fmt::Debug for CommitTsTooLarge {
 }
 
 impl ::protobuf::reflect::ProtobufValue for CommitTsTooLarge {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct AssertionFailed {
+    // message fields
+    pub start_ts: u64,
+    pub key: ::std::vec::Vec<u8>,
+    pub assertion: Assertion,
+    pub existing_start_ts: u64,
+    pub existing_commit_ts: u64,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a AssertionFailed {
+    fn default() -> &'a AssertionFailed {
+        <AssertionFailed as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl AssertionFailed {
+    pub fn new() -> AssertionFailed {
+        ::std::default::Default::default()
+    }
+
+    // uint64 start_ts = 1;
+
+
+    pub fn get_start_ts(&self) -> u64 {
+        self.start_ts
+    }
+    pub fn clear_start_ts(&mut self) {
+        self.start_ts = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_start_ts(&mut self, v: u64) {
+        self.start_ts = v;
+    }
+
+    // bytes key = 2;
+
+
+    pub fn get_key(&self) -> &[u8] {
+        &self.key
+    }
+    pub fn clear_key(&mut self) {
+        self.key.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_key(&mut self, v: ::std::vec::Vec<u8>) {
+        self.key = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_key(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.key
+    }
+
+    // Take field
+    pub fn take_key(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.key, ::std::vec::Vec::new())
+    }
+
+    // .kvrpcpb.Assertion assertion = 3;
+
+
+    pub fn get_assertion(&self) -> Assertion {
+        self.assertion
+    }
+    pub fn clear_assertion(&mut self) {
+        self.assertion = Assertion::None;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_assertion(&mut self, v: Assertion) {
+        self.assertion = v;
+    }
+
+    // uint64 existing_start_ts = 4;
+
+
+    pub fn get_existing_start_ts(&self) -> u64 {
+        self.existing_start_ts
+    }
+    pub fn clear_existing_start_ts(&mut self) {
+        self.existing_start_ts = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_existing_start_ts(&mut self, v: u64) {
+        self.existing_start_ts = v;
+    }
+
+    // uint64 existing_commit_ts = 5;
+
+
+    pub fn get_existing_commit_ts(&self) -> u64 {
+        self.existing_commit_ts
+    }
+    pub fn clear_existing_commit_ts(&mut self) {
+        self.existing_commit_ts = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_existing_commit_ts(&mut self, v: u64) {
+        self.existing_commit_ts = v;
+    }
+}
+
+impl ::protobuf::Message for AssertionFailed {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.start_ts = tmp;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.key)?;
+                },
+                3 => {
+                    if wire_type == ::protobuf::wire_format::WireTypeVarint {self.assertion = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
+                },
+                4 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.existing_start_ts = tmp;
+                },
+                5 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.existing_commit_ts = tmp;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.start_ts != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.start_ts, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if !self.key.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(2, &self.key);
+        }
+        if self.assertion != Assertion::None {
+            my_size += ::protobuf::rt::enum_size(3, self.assertion);
+        }
+        if self.existing_start_ts != 0 {
+            my_size += ::protobuf::rt::value_size(4, self.existing_start_ts, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.existing_commit_ts != 0 {
+            my_size += ::protobuf::rt::value_size(5, self.existing_commit_ts, ::protobuf::wire_format::WireTypeVarint);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if self.start_ts != 0 {
+            os.write_uint64(1, self.start_ts)?;
+        }
+        if !self.key.is_empty() {
+            os.write_bytes(2, &self.key)?;
+        }
+        if self.assertion != Assertion::None {
+            os.write_enum(3, self.assertion.value())?;
+        }
+        if self.existing_start_ts != 0 {
+            os.write_uint64(4, self.existing_start_ts)?;
+        }
+        if self.existing_commit_ts != 0 {
+            os.write_uint64(5, self.existing_commit_ts)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> AssertionFailed {
+        AssertionFailed::new()
+    }
+
+    fn default_instance() -> &'static AssertionFailed {
+        static mut instance: ::protobuf::lazy::Lazy<AssertionFailed> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const AssertionFailed,
+        };
+        unsafe {
+            instance.get(AssertionFailed::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for AssertionFailed {
+    fn clear(&mut self) {
+        self.start_ts = 0;
+        self.key.clear();
+        self.assertion = Assertion::None;
+        self.existing_start_ts = 0;
+        self.existing_commit_ts = 0;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::protobuf::PbPrint for AssertionFailed {
+    #[allow(unused_variables)]
+    fn fmt(&self, name: &str, buf: &mut String) {
+        ::protobuf::push_message_start(name, buf);
+        let old_len = buf.len();
+        ::protobuf::PbPrint::fmt(&self.start_ts, "start_ts", buf);
+        ::protobuf::PbPrint::fmt(&self.key, "key", buf);
+        ::protobuf::PbPrint::fmt(&self.assertion, "assertion", buf);
+        ::protobuf::PbPrint::fmt(&self.existing_start_ts, "existing_start_ts", buf);
+        ::protobuf::PbPrint::fmt(&self.existing_commit_ts, "existing_commit_ts", buf);
+        if old_len < buf.len() {
+          buf.push(' ');
+        }
+        buf.push('}');
+    }
+}
+impl ::std::fmt::Debug for AssertionFailed {
+    #[allow(unused_variables)]
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        let mut s = String::new();
+        ::protobuf::PbPrint::fmt(&self.start_ts, "start_ts", &mut s);
+        ::protobuf::PbPrint::fmt(&self.key, "key", &mut s);
+        ::protobuf::PbPrint::fmt(&self.assertion, "assertion", &mut s);
+        ::protobuf::PbPrint::fmt(&self.existing_start_ts, "existing_start_ts", &mut s);
+        ::protobuf::PbPrint::fmt(&self.existing_commit_ts, "existing_commit_ts", &mut s);
+        write!(f, "{}", s)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for AssertionFailed {
     fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
         ::protobuf::reflect::ProtobufValueRef::Message(self)
     }
@@ -30276,6 +30682,63 @@ impl ::std::fmt::Debug for RawChecksumResponse {
 impl ::protobuf::reflect::ProtobufValue for RawChecksumResponse {
     fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
         ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(Clone,PartialEq,Eq,Debug,Hash)]
+pub enum ApiVersion {
+    V1 = 0,
+    V1ttl = 1,
+    V2 = 2,
+}
+
+impl ::protobuf::ProtobufEnum for ApiVersion {
+    fn value(&self) -> i32 {
+        *self as i32
+    }
+
+    fn from_i32(value: i32) -> ::std::option::Option<ApiVersion> {
+        match value {
+            0 => ::std::option::Option::Some(ApiVersion::V1),
+            1 => ::std::option::Option::Some(ApiVersion::V1ttl),
+            2 => ::std::option::Option::Some(ApiVersion::V2),
+            _ => ::std::option::Option::None
+        }
+    }
+
+    fn values() -> &'static [Self] {
+        static values: &'static [ApiVersion] = &[
+            ApiVersion::V1,
+            ApiVersion::V1ttl,
+            ApiVersion::V2,
+        ];
+        values
+    }
+}
+
+impl ::std::marker::Copy for ApiVersion {
+}
+
+impl ::protobuf::PbPrint for ApiVersion {
+    fn fmt(&self, name: &str, buf: &mut String) {
+        use std::fmt::Write;
+        if *self == ApiVersion::default() {
+            return;
+        }
+        ::protobuf::push_field_start(name, buf);
+        write!(buf, "{:?}", self).unwrap();
+    }
+}
+
+impl ::std::default::Default for ApiVersion {
+    fn default() -> Self {
+        ApiVersion::V1
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for ApiVersion {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Enum(self.descriptor())
     }
 }
 

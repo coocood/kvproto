@@ -45,6 +45,7 @@ pub struct BackupMeta {
     pub ddls: ::std::vec::Vec<u8>,
     pub ddl_indexes: ::protobuf::SingularPtrField<MetaFile>,
     pub backup_result: ::std::string::String,
+    pub api_version: super::kvrpcpb::ApiVersion,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -446,6 +447,21 @@ impl BackupMeta {
     pub fn take_backup_result(&mut self) -> ::std::string::String {
         ::std::mem::replace(&mut self.backup_result, ::std::string::String::new())
     }
+
+    // .kvrpcpb.APIVersion api_version = 18;
+
+
+    pub fn get_api_version(&self) -> super::kvrpcpb::ApiVersion {
+        self.api_version
+    }
+    pub fn clear_api_version(&mut self) {
+        self.api_version = super::kvrpcpb::ApiVersion::V1;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_api_version(&mut self, v: super::kvrpcpb::ApiVersion) {
+        self.api_version = v;
+    }
 }
 
 impl ::protobuf::Message for BackupMeta {
@@ -560,6 +576,9 @@ impl ::protobuf::Message for BackupMeta {
                 17 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.backup_result)?;
                 },
+                18 => {
+                    if wire_type == ::protobuf::wire_format::WireTypeVarint {self.api_version = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -626,6 +645,9 @@ impl ::protobuf::Message for BackupMeta {
         }
         if !self.backup_result.is_empty() {
             my_size += ::protobuf::rt::string_size(17, &self.backup_result);
+        }
+        if self.api_version != super::kvrpcpb::ApiVersion::V1 {
+            my_size += ::protobuf::rt::enum_size(18, self.api_version);
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -695,6 +717,9 @@ impl ::protobuf::Message for BackupMeta {
         if !self.backup_result.is_empty() {
             os.write_string(17, &self.backup_result)?;
         }
+        if self.api_version != super::kvrpcpb::ApiVersion::V1 {
+            os.write_enum(18, self.api_version.value())?;
+        }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -758,6 +783,7 @@ impl ::protobuf::Clear for BackupMeta {
         self.ddls.clear();
         self.ddl_indexes.clear();
         self.backup_result.clear();
+        self.api_version = super::kvrpcpb::ApiVersion::V1;
         self.unknown_fields.clear();
     }
 }
@@ -783,6 +809,7 @@ impl ::protobuf::PbPrint for BackupMeta {
         ::protobuf::PbPrint::fmt(&self.ddls, "ddls", buf);
         ::protobuf::PbPrint::fmt(&self.ddl_indexes, "ddl_indexes", buf);
         ::protobuf::PbPrint::fmt(&self.backup_result, "backup_result", buf);
+        ::protobuf::PbPrint::fmt(&self.api_version, "api_version", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -809,6 +836,7 @@ impl ::std::fmt::Debug for BackupMeta {
         ::protobuf::PbPrint::fmt(&self.ddls, "ddls", &mut s);
         ::protobuf::PbPrint::fmt(&self.ddl_indexes, "ddl_indexes", &mut s);
         ::protobuf::PbPrint::fmt(&self.backup_result, "backup_result", &mut s);
+        ::protobuf::PbPrint::fmt(&self.api_version, "api_version", &mut s);
         write!(f, "{}", s)
     }
 }
@@ -833,6 +861,7 @@ pub struct File {
     pub total_bytes: u64,
     pub cf: ::std::string::String,
     pub size: u64,
+    pub cipher_iv: ::std::vec::Vec<u8>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -1068,6 +1097,32 @@ impl File {
     pub fn set_size(&mut self, v: u64) {
         self.size = v;
     }
+
+    // bytes cipher_iv = 12;
+
+
+    pub fn get_cipher_iv(&self) -> &[u8] {
+        &self.cipher_iv
+    }
+    pub fn clear_cipher_iv(&mut self) {
+        self.cipher_iv.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_cipher_iv(&mut self, v: ::std::vec::Vec<u8>) {
+        self.cipher_iv = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_cipher_iv(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.cipher_iv
+    }
+
+    // Take field
+    pub fn take_cipher_iv(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.cipher_iv, ::std::vec::Vec::new())
+    }
 }
 
 impl ::protobuf::Message for File {
@@ -1136,6 +1191,9 @@ impl ::protobuf::Message for File {
                     let tmp = is.read_uint64()?;
                     self.size = tmp;
                 },
+                12 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.cipher_iv)?;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -1181,6 +1239,9 @@ impl ::protobuf::Message for File {
         if self.size != 0 {
             my_size += ::protobuf::rt::value_size(11, self.size, ::protobuf::wire_format::WireTypeVarint);
         }
+        if !self.cipher_iv.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(12, &self.cipher_iv);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -1219,6 +1280,9 @@ impl ::protobuf::Message for File {
         }
         if self.size != 0 {
             os.write_uint64(11, self.size)?;
+        }
+        if !self.cipher_iv.is_empty() {
+            os.write_bytes(12, &self.cipher_iv)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -1278,6 +1342,7 @@ impl ::protobuf::Clear for File {
         self.total_bytes = 0;
         self.cf.clear();
         self.size = 0;
+        self.cipher_iv.clear();
         self.unknown_fields.clear();
     }
 }
@@ -1298,6 +1363,7 @@ impl ::protobuf::PbPrint for File {
         ::protobuf::PbPrint::fmt(&self.total_bytes, "total_bytes", buf);
         ::protobuf::PbPrint::fmt(&self.cf, "cf", buf);
         ::protobuf::PbPrint::fmt(&self.size, "size", buf);
+        ::protobuf::PbPrint::fmt(&self.cipher_iv, "cipher_iv", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -1319,6 +1385,7 @@ impl ::std::fmt::Debug for File {
         ::protobuf::PbPrint::fmt(&self.total_bytes, "total_bytes", &mut s);
         ::protobuf::PbPrint::fmt(&self.cf, "cf", &mut s);
         ::protobuf::PbPrint::fmt(&self.size, "size", &mut s);
+        ::protobuf::PbPrint::fmt(&self.cipher_iv, "cipher_iv", &mut s);
         write!(f, "{}", s)
     }
 }
@@ -2871,6 +2938,196 @@ impl ::protobuf::reflect::ProtobufValue for Error {
 }
 
 #[derive(PartialEq,Clone,Default)]
+pub struct CipherInfo {
+    // message fields
+    pub cipher_type: super::encryptionpb::EncryptionMethod,
+    pub cipher_key: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a CipherInfo {
+    fn default() -> &'a CipherInfo {
+        <CipherInfo as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl CipherInfo {
+    pub fn new() -> CipherInfo {
+        ::std::default::Default::default()
+    }
+
+    // .encryptionpb.EncryptionMethod cipher_type = 1;
+
+
+    pub fn get_cipher_type(&self) -> super::encryptionpb::EncryptionMethod {
+        self.cipher_type
+    }
+    pub fn clear_cipher_type(&mut self) {
+        self.cipher_type = super::encryptionpb::EncryptionMethod::Unknown;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_cipher_type(&mut self, v: super::encryptionpb::EncryptionMethod) {
+        self.cipher_type = v;
+    }
+
+    // bytes cipher_key = 2;
+
+
+    pub fn get_cipher_key(&self) -> &[u8] {
+        &self.cipher_key
+    }
+    pub fn clear_cipher_key(&mut self) {
+        self.cipher_key.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_cipher_key(&mut self, v: ::std::vec::Vec<u8>) {
+        self.cipher_key = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_cipher_key(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.cipher_key
+    }
+
+    // Take field
+    pub fn take_cipher_key(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.cipher_key, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for CipherInfo {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type == ::protobuf::wire_format::WireTypeVarint {self.cipher_type = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.cipher_key)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.cipher_type != super::encryptionpb::EncryptionMethod::Unknown {
+            my_size += ::protobuf::rt::enum_size(1, self.cipher_type);
+        }
+        if !self.cipher_key.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(2, &self.cipher_key);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if self.cipher_type != super::encryptionpb::EncryptionMethod::Unknown {
+            os.write_enum(1, self.cipher_type.value())?;
+        }
+        if !self.cipher_key.is_empty() {
+            os.write_bytes(2, &self.cipher_key)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> CipherInfo {
+        CipherInfo::new()
+    }
+
+    fn default_instance() -> &'static CipherInfo {
+        static mut instance: ::protobuf::lazy::Lazy<CipherInfo> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const CipherInfo,
+        };
+        unsafe {
+            instance.get(CipherInfo::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for CipherInfo {
+    fn clear(&mut self) {
+        self.cipher_type = super::encryptionpb::EncryptionMethod::Unknown;
+        self.cipher_key.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::protobuf::PbPrint for CipherInfo {
+    #[allow(unused_variables)]
+    fn fmt(&self, name: &str, buf: &mut String) {
+        ::protobuf::push_message_start(name, buf);
+        let old_len = buf.len();
+        ::protobuf::PbPrint::fmt(&self.cipher_type, "cipher_type", buf);
+        ::protobuf::PbPrint::fmt(&self.cipher_key, "cipher_key", buf);
+        if old_len < buf.len() {
+          buf.push(' ');
+        }
+        buf.push('}');
+    }
+}
+impl ::std::fmt::Debug for CipherInfo {
+    #[allow(unused_variables)]
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        let mut s = String::new();
+        ::protobuf::PbPrint::fmt(&self.cipher_type, "cipher_type", &mut s);
+        ::protobuf::PbPrint::fmt(&self.cipher_key, "cipher_key", &mut s);
+        write!(f, "{}", s)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for CipherInfo {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
 pub struct BackupRequest {
     // message fields
     pub cluster_id: u64,
@@ -2885,6 +3142,7 @@ pub struct BackupRequest {
     pub cf: ::std::string::String,
     pub compression_type: CompressionType,
     pub compression_level: i32,
+    pub cipher_info: ::protobuf::SingularPtrField<CipherInfo>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -3131,11 +3389,49 @@ impl BackupRequest {
     pub fn set_compression_level(&mut self, v: i32) {
         self.compression_level = v;
     }
+
+    // .backup.CipherInfo cipher_info = 14;
+
+
+    pub fn get_cipher_info(&self) -> &CipherInfo {
+        self.cipher_info.as_ref().unwrap_or_else(|| CipherInfo::default_instance())
+    }
+    pub fn clear_cipher_info(&mut self) {
+        self.cipher_info.clear();
+    }
+
+    pub fn has_cipher_info(&self) -> bool {
+        self.cipher_info.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_cipher_info(&mut self, v: CipherInfo) {
+        self.cipher_info = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_cipher_info(&mut self) -> &mut CipherInfo {
+        if self.cipher_info.is_none() {
+            self.cipher_info.set_default();
+        }
+        self.cipher_info.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_cipher_info(&mut self) -> CipherInfo {
+        self.cipher_info.take().unwrap_or_else(|| CipherInfo::new())
+    }
 }
 
 impl ::protobuf::Message for BackupRequest {
     fn is_initialized(&self) -> bool {
         for v in &self.storage_backend {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.cipher_info {
             if !v.is_initialized() {
                 return false;
             }
@@ -3211,6 +3507,9 @@ impl ::protobuf::Message for BackupRequest {
                     let tmp = is.read_int32()?;
                     self.compression_level = tmp;
                 },
+                14 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.cipher_info)?;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -3260,6 +3559,10 @@ impl ::protobuf::Message for BackupRequest {
         if self.compression_level != 0 {
             my_size += ::protobuf::rt::value_size(13, self.compression_level, ::protobuf::wire_format::WireTypeVarint);
         }
+        if let Some(ref v) = self.cipher_info.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -3303,6 +3606,11 @@ impl ::protobuf::Message for BackupRequest {
         }
         if self.compression_level != 0 {
             os.write_int32(13, self.compression_level)?;
+        }
+        if let Some(ref v) = self.cipher_info.as_ref() {
+            os.write_tag(14, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -3363,6 +3671,7 @@ impl ::protobuf::Clear for BackupRequest {
         self.cf.clear();
         self.compression_type = CompressionType::Unknown;
         self.compression_level = 0;
+        self.cipher_info.clear();
         self.unknown_fields.clear();
     }
 }
@@ -3384,6 +3693,7 @@ impl ::protobuf::PbPrint for BackupRequest {
         ::protobuf::PbPrint::fmt(&self.cf, "cf", buf);
         ::protobuf::PbPrint::fmt(&self.compression_type, "compression_type", buf);
         ::protobuf::PbPrint::fmt(&self.compression_level, "compression_level", buf);
+        ::protobuf::PbPrint::fmt(&self.cipher_info, "cipher_info", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -3406,6 +3716,7 @@ impl ::std::fmt::Debug for BackupRequest {
         ::protobuf::PbPrint::fmt(&self.cf, "cf", &mut s);
         ::protobuf::PbPrint::fmt(&self.compression_type, "compression_type", &mut s);
         ::protobuf::PbPrint::fmt(&self.compression_level, "compression_level", &mut s);
+        ::protobuf::PbPrint::fmt(&self.cipher_info, "cipher_info", &mut s);
         write!(f, "{}", s)
     }
 }
@@ -3438,6 +3749,7 @@ pub enum StorageBackend_oneof_backend {
     S3(S3),
     Gcs(Gcs),
     CloudDynamic(CloudDynamic),
+    Hdfs(Hdfs),
 }
 
 impl ::protobuf::PbPrint for StorageBackend_oneof_backend {
@@ -3448,6 +3760,7 @@ impl ::protobuf::PbPrint for StorageBackend_oneof_backend {
             StorageBackend_oneof_backend::S3(v) => ::protobuf::PbPrint::fmt(v, name, buf),
             StorageBackend_oneof_backend::Gcs(v) => ::protobuf::PbPrint::fmt(v, name, buf),
             StorageBackend_oneof_backend::CloudDynamic(v) => ::protobuf::PbPrint::fmt(v, name, buf),
+            StorageBackend_oneof_backend::Hdfs(v) => ::protobuf::PbPrint::fmt(v, name, buf),
         }
     }
 }
@@ -3701,6 +4014,55 @@ impl StorageBackend {
             CloudDynamic::new()
         }
     }
+
+    // .backup.HDFS hdfs = 6;
+
+
+    pub fn get_hdfs(&self) -> &Hdfs {
+        match self.backend {
+            ::std::option::Option::Some(StorageBackend_oneof_backend::Hdfs(ref v)) => v,
+            _ => Hdfs::default_instance(),
+        }
+    }
+    pub fn clear_hdfs(&mut self) {
+        self.backend = ::std::option::Option::None;
+    }
+
+    pub fn has_hdfs(&self) -> bool {
+        match self.backend {
+            ::std::option::Option::Some(StorageBackend_oneof_backend::Hdfs(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_hdfs(&mut self, v: Hdfs) {
+        self.backend = ::std::option::Option::Some(StorageBackend_oneof_backend::Hdfs(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_hdfs(&mut self) -> &mut Hdfs {
+        if let ::std::option::Option::Some(StorageBackend_oneof_backend::Hdfs(_)) = self.backend {
+        } else {
+            self.backend = ::std::option::Option::Some(StorageBackend_oneof_backend::Hdfs(Hdfs::new()));
+        }
+        match self.backend {
+            ::std::option::Option::Some(StorageBackend_oneof_backend::Hdfs(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_hdfs(&mut self) -> Hdfs {
+        if self.has_hdfs() {
+            match self.backend.take() {
+                ::std::option::Option::Some(StorageBackend_oneof_backend::Hdfs(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            Hdfs::new()
+        }
+    }
 }
 
 impl ::protobuf::Message for StorageBackend {
@@ -3726,6 +4088,11 @@ impl ::protobuf::Message for StorageBackend {
             }
         }
         if let Some(StorageBackend_oneof_backend::CloudDynamic(ref v)) = self.backend {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(StorageBackend_oneof_backend::Hdfs(ref v)) = self.backend {
             if !v.is_initialized() {
                 return false;
             }
@@ -3767,6 +4134,12 @@ impl ::protobuf::Message for StorageBackend {
                     }
                     self.backend = ::std::option::Option::Some(StorageBackend_oneof_backend::CloudDynamic(is.read_message()?));
                 },
+                6 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.backend = ::std::option::Option::Some(StorageBackend_oneof_backend::Hdfs(is.read_message()?));
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -3798,6 +4171,10 @@ impl ::protobuf::Message for StorageBackend {
                     my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
                 &StorageBackend_oneof_backend::CloudDynamic(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &StorageBackend_oneof_backend::Hdfs(ref v) => {
                     let len = v.compute_size();
                     my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
@@ -3833,6 +4210,11 @@ impl ::protobuf::Message for StorageBackend {
                 },
                 &StorageBackend_oneof_backend::CloudDynamic(ref v) => {
                     os.write_tag(5, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &StorageBackend_oneof_backend::Hdfs(ref v) => {
+                    os.write_tag(6, ::protobuf::wire_format::WireTypeLengthDelimited)?;
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
                 },
@@ -3885,6 +4267,7 @@ impl ::protobuf::Message for StorageBackend {
 
 impl ::protobuf::Clear for StorageBackend {
     fn clear(&mut self) {
+        self.backend = ::std::option::Option::None;
         self.backend = ::std::option::Option::None;
         self.backend = ::std::option::Option::None;
         self.backend = ::std::option::Option::None;
@@ -5663,6 +6046,168 @@ impl ::std::fmt::Debug for CloudDynamic {
 }
 
 impl ::protobuf::reflect::ProtobufValue for CloudDynamic {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct Hdfs {
+    // message fields
+    pub remote: ::std::string::String,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a Hdfs {
+    fn default() -> &'a Hdfs {
+        <Hdfs as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl Hdfs {
+    pub fn new() -> Hdfs {
+        ::std::default::Default::default()
+    }
+
+    // string remote = 1;
+
+
+    pub fn get_remote(&self) -> &str {
+        &self.remote
+    }
+    pub fn clear_remote(&mut self) {
+        self.remote.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_remote(&mut self, v: ::std::string::String) {
+        self.remote = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_remote(&mut self) -> &mut ::std::string::String {
+        &mut self.remote
+    }
+
+    // Take field
+    pub fn take_remote(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.remote, ::std::string::String::new())
+    }
+}
+
+impl ::protobuf::Message for Hdfs {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.remote)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.remote.is_empty() {
+            my_size += ::protobuf::rt::string_size(1, &self.remote);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if !self.remote.is_empty() {
+            os.write_string(1, &self.remote)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> Hdfs {
+        Hdfs::new()
+    }
+
+    fn default_instance() -> &'static Hdfs {
+        static mut instance: ::protobuf::lazy::Lazy<Hdfs> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const Hdfs,
+        };
+        unsafe {
+            instance.get(Hdfs::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for Hdfs {
+    fn clear(&mut self) {
+        self.remote.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::protobuf::PbPrint for Hdfs {
+    #[allow(unused_variables)]
+    fn fmt(&self, name: &str, buf: &mut String) {
+        ::protobuf::push_message_start(name, buf);
+        let old_len = buf.len();
+        ::protobuf::PbPrint::fmt(&self.remote, "remote", buf);
+        if old_len < buf.len() {
+          buf.push(' ');
+        }
+        buf.push('}');
+    }
+}
+impl ::std::fmt::Debug for Hdfs {
+    #[allow(unused_variables)]
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        let mut s = String::new();
+        ::protobuf::PbPrint::fmt(&self.remote, "remote", &mut s);
+        write!(f, "{}", s)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for Hdfs {
     fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
         ::protobuf::reflect::ProtobufValueRef::Message(self)
     }
