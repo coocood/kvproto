@@ -14,6 +14,12 @@ mod protos {
 
 pub use protos::*;
 
+#[cfg(all(feature = "tonic-protobuf-codec", feature = "prost-codec"))]
+compile_error!("feature `tonic-protobuf-codec` uses rust-protobuf messages, it can't be used with `prost-codec`");
+
+#[cfg(feature = "tonic-protobuf-codec")]
+pub mod tonic_codec;
+
 #[cfg(feature = "prost-codec")]
 pub mod prost_adapt {
     use crate::backup::{error, ClusterIdError, Error};
